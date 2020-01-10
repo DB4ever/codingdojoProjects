@@ -144,17 +144,15 @@ def quoting():
                     author, 
                     quotes.created_at, 
                     quotes.quote, 
-                    posted_by, 
-                    count(liked_quotes.quotes_id) as times_liked 
-                from quotes left join liked_quotes 
-                ON quotes.id = liked_quotes.quotes_id 
-                left join users
-                ON quotes.posted_by = users.id;
+                    posted_by
+                from quotes inner join users
+                ON quotes.posted_by = %(uid)s
+                left join liked_quotes
+                on liked_quotes.quotes_id = quotes.id;
                 """
     # import ipdb; ipdb.set_trace()
-    
-              
-    quotes = mysql.query_db(query)
+
+    quotes = mysql.query_db(query, data)
     print(quotes)
     #import ipdb; ipdb.set_trace()
 
@@ -216,6 +214,17 @@ def unlike_quote(quotes_id):
 
 @app.route("/quotes/<quote_id>/delete", methods=["GET"])
 def delete_quote(quote_id):
+    query = "SELECT id FROM quotes where id = %(quote_id)s AND posted_by=%(user_id)s";
+    data = {
+        'quote_id': quote_id,
+        "user_id": session["user_id"]
+    }
+    mysql = connectToMySQL('quotedash')
+    res = mysql.query_db(query, data)
+    if not res:
+        flash("You can't delete this quote since you haven't posted it.")
+        return redirect("/quote")
+
 
     query = "DELETE FROM liked_quotes WHERE quotes_id = %(quote_id)s"
     data = {
