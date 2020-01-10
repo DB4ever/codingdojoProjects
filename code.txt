@@ -1,0 +1,28 @@
+                <!-- {% if quote['liked_quotes'] %}
+                <a href='/quotes/{{quotes.id}}/like'><button>like!</button></a>
+                {% else %}
+                <a href='/quotes/{{quotes.id}}/unlike'><button>UnLike!</button></a>
+                {% endif %} -->
+
+
+
+
+
+                {{liked_quotes.users_id}} people like this
+
+                , current_user_liked_quotes=current_user_liked_quotes
+                query = """SELECT quotes.id,
+                      users.fname,
+                      quotes.author, 
+                      quotes.created_at, 
+                      quotes.quote,
+                      quotes.posted_by,
+                      COUNT(liked_quotes.quotes_id) as times_liked 
+                FROM quotes 
+                LEFT JOIN liked_quotes
+                ON quotes.id = liked_quotes.quotes_id
+                JOIN users
+                ON quotes.id = users.id
+                GROUP BY quotes.id
+                ORDER BY quotes.created_at DESC
+                """

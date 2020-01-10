@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Edit Account</title>
+</head>
+<body>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for message in messages %}
+            <p>{{message}}</p>
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
+    <h1>Edit My Account</h1>
+    <a href="/quote"><button>back</button></a>
+    <a href="/logout">Logout</a>
+    <form action="/editAccount" method="POST" id="submit">
+        <p>First Name: <input type="text" id="fname" name="fname"></p>
+        <p>Last Name: <input type="text" id="lname" name="lname"></p>
+        <p>Email: <input type="text" id="email" name="email"></p>
+        <input type="submit" value="Edit my profile">
+    </form>
+    <p id="newaccount"></p>
+    <script>
+        function logSubmit(submit) {
+        event.preventDefault();
+        //document.getElementById("submit");
+        const firstName = document.getElementById('fname');
+        const lastName = document.getElementById('lname');
+        const email = document.getElementById('email');
+        console.log(firstName.value);
+        console.log(lastName.value);
+        console.log(email.value);
+        const output = document.getElementById("newaccount");
+        output.innerText = `First Name: ${firstName.value} Last Name: ${lastName.value} Email: ${email.value}`
+        }
+        window.addEventListener('DOMContentLoaded', (event) => {
+            const form = document.getElementById('submit');
+
+        form.addEventListener('submit', logSubmit);    
+        });
+    
+    </script>
+</body>
+</html>

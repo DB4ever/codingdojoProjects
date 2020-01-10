@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Quotes</title>
+</head>
+<body>
+    
+    <div class = "wrapper">
+        <h1>Welcome {{ user.fname }}!</h1>
+        <a href="/editAccount"><button>Edit My Account</button></a>
+        <a href="/logout">Logout</a>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <p>{{message}}</p>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        <hr>
+        <div class = "quotes">
+            <h2>See quotes by <a href="/users">all users here.</a></h2>
+            <h1>Quotes</h1>
+            {% if quotes %}
+                <table>
+                    <thead>
+                        <th>Quote</th>
+                        <th>Attribution</th>
+                        <th>Posted By</th>
+                        <th>Likes</th>
+                        <th>Like/Unlike this quote</th>
+                        <th>Delete this quote</th>
+                    </thead>
+                    <tbody>
+                        {% for each_quote in quotes %}
+                        <tr>
+                            <td>{{each_quote.quote}}</td>
+                            <td>{{ each_quote.author }}</td>
+                            <td>{{each_quote.posted_by_username}}</td>
+                            <td>{{each_quote.times_liked}} people like this</td>
+                            <td>
+                                {% if each_quote.id in current_user_liked_quotes %}
+                                <a href='/quotes/{{each_quote.id}}/add_like'><button>like!</button></a>
+                                {% else %}
+                                <a href='/quotes/{{each_quote.id}}/unlike'><button>UnLike!</button></a>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href='/quotes/{{each_quote.id}}/delete'><button>Delete</button></a>
+                            </td>
+                        </tr>
+                        {% endfor %} 
+                    </tbody>
+                </table>
+                
+            {% endif%}
+
+        </div>
+        <div class = "Add Quote">
+            <h1>Add a Quote!</h1>
+            <form action="/create" method="POST">
+                <p>Author <input type="text" name="author"></p>
+                <p>Quote <input type="text" name="quote"></p>
+                <input type="submit" value="Submit">
+            </form>
+        </div>
+    </div>
+</body>
+</html>

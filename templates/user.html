@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>User Quotes</title>
+</head>
+<body>
+    <h1>{{user}} Quotes</h1>
+    <a href="/quote"><button>Edit My Account</button></a>
+    <a href="/logout">Logout</a>
+
+    <div class = "quotes">
+        <h1>All Quotes</h1>
+        {% if quotes %}
+            <table>
+                <thead>
+                    <th>Posted By</th>
+                    <th>Quote</th>
+                    <th>Author</th>
+                </thead>
+                <tbody>
+                    {% for each_quote in quotes %}
+                    <tr>
+                        <td>{{each_quote.posted_by}}</td>
+                        <td>{{each_quote.quote}}</td>
+                        <td>{{each_quote.author}}</td>
+                    </tr>
+                    {% endfor %} 
+                </tbody>
+            </table>
+        {% endif %}
+</body>
+</html>
